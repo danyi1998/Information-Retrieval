@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>Search Page</h1>
+        <form method="POST"> 
+            {% csrf_token %} 
+            <label for="search_box">Enter Query: </label>
+            <input id="search_box" type="text" name="query_search"> 
+            <input type="submit" value="Search"> 
+        </form>
+    </body>
+</html>
