@@ -1,3 +1,6 @@
+#importing the necessary libraries
+#Porter Stemmer is a standard way when it comes to "stemming" words
+
 from nltk import word_tokenize
 from nltk.stem.porter import PorterStemmer
 
