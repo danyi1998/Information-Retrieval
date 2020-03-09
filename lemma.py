@@ -34,7 +34,7 @@ class lemmatization(object):
     def tokenize(text):
 
         #Create Stemmer
-        stemmer = PorterStemmer()
+        stemmer = WordNetLemmatizer()
 
         #Remove irrelevant character
         text = re.sub(r"http\S+", '', text)
