@@ -2,14 +2,154 @@
 <html>
     <head>
         <title></title>
+        <script> 
+            function show_just_all() {
+                document.getElementById("all").style.display = "block"; 
+                document.getElementById("hard").style.display = "none";
+                document.getElementById("soft").style.display = "none";
+                document.getElementById("pos").style.display = "none";
+                document.getElementById("neu").style.display = "none";
+                document.getElementById("neg").style.display = "none";
+            }
+
+            function show_just_hard() {
+                document.getElementById("all").style.display = "none";  
+                document.getElementById("hard").style.display = "block";  
+                document.getElementById("soft").style.display = "none";
+                document.getElementById("pos").style.display = "none";
+                document.getElementById("neu").style.display = "none";
+                document.getElementById("neg").style.display = "none"; 
+            } 
+
+            function show_just_soft() {
+                document.getElementById("all").style.display = "none";  
+                document.getElementById("hard").style.display = "none";  
+                document.getElementById("soft").style.display = "block";
+                document.getElementById("pos").style.display = "none";
+                document.getElementById("neu").style.display = "none";
+                document.getElementById("neg").style.display = "none";
+            }
+
+            function show_just_pos() {
+                document.getElementById("all").style.display = "none";  
+                document.getElementById("hard").style.display = "none";  
+                document.getElementById("soft").style.display = "none";
+                document.getElementById("pos").style.display = "block";
+                document.getElementById("neu").style.display = "none";
+                document.getElementById("neg").style.display = "none";
+            }
+
+            function show_just_neu() {
+                document.getElementById("all").style.display = "none";  
+                document.getElementById("hard").style.display = "none";  
+                document.getElementById("soft").style.display = "none";
+                document.getElementById("pos").style.display = "none";
+                document.getElementById("neu").style.display = "block";
+                document.getElementById("neg").style.display = "none";
+            }
+
+            function show_just_neg() {
+                document.getElementById("all").style.display = "none";  
+                document.getElementById("hard").style.display = "none";  
+                document.getElementById("soft").style.display = "none";
+                document.getElementById("pos").style.display = "none";
+                document.getElementById("neu").style.display = "none";
+                document.getElementById("neg").style.display = "block"; 
+            }  
+        </script>
     </head>
+
     <body>
         <h1>Search Page</h1>
+        <button type="button" onclick="show_just_all()">All</button> 
+        <button type="button" onclick="show_just_hard()">Hard News</button>
+        <button type="button" onclick="show_just_soft()">Soft News</button>
+        <button type="button" onclick="show_just_pos()">Positive News</button>
+        <button type="button" onclick="show_just_neu()">Neutral News</button>
+        <button type="button" onclick="show_just_neg()">Negative News</button> 
         <form method="POST"> 
             {% csrf_token %} 
             <label for="search_box">Enter Query: </label>
             <input id="search_box" type="text" name="query_search"> 
             <input type="submit" value="Search"> 
         </form>
+
+        <div id="all">
+            {% for result in all_results %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+        
+        <div id="hard">
+            {% for result in hard %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+
+        <div id="soft">
+            {% for result in soft %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+
+        <div id="pos">
+            {% for result in positive %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+
+        <div id="neu">
+            {% for result in neutral %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+
+        <div id="neg">
+            {% for result in negative %} 
+            <br/>
+            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <br/>
+            {{result.news_category.0}} news 
+            <br/>
+            {{result.sentiment.0}} sentiment 
+            <br/>
+            {% endfor %}
+        </div>
+
+        <script>
+            show_just_all();
+        </script>
+         
     </body>
 </html>
+
