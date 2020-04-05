@@ -5,12 +5,14 @@ from nltk.corpus import stopwords
 import string
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize 
+import time 
 
 
 # home page 
 def home(request):  
     # get user's query input
     query = request.POST.get("query_search") 
+    start_time = time.time() 
 
     # get list of stopwords and punctuation 
     stoplist = stopwords.words("english") + list(string.punctuation) 
@@ -34,6 +36,8 @@ def home(request):
         query = "author:" + query + " OR " + "url:" + query + " OR " + "processed_title:" + query 
         # make request 
         response = requests.get('http://localhost:8983/solr/irproject/select?q=' + query) 
+        time_taken = time.time() - start_time 
+        print(time_taken) 
         # parse response 
         response = response.json()  
         response = response["response"]["docs"]
@@ -68,4 +72,3 @@ def home(request):
 # results page 
 def results(request):
     return render(request, "search/results.html") 
-
