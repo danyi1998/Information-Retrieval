@@ -7,9 +7,19 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize 
 import time 
 
+hard_count = 0
+soft_count = 0 
 
 # home page 
-def home(request):  
+def home(request):
+    global hard_count
+    global soft_count
+
+    if request.POST.get("req_inc_hs") == "hard":
+        hard_count += 1
+    elif request.POST.get("req_inc_hs") == "soft":
+        soft_count += 1 
+
     # get user's query input
     query = request.POST.get("query_search") 
     start_time = time.time() 
@@ -41,6 +51,7 @@ def home(request):
         # parse response 
         response = response.json()  
         response = response["response"]["docs"]
+        print(response) 
 
         # get needed 
         for i in range(len(response)):
@@ -64,8 +75,11 @@ def home(request):
             # get negative sentiment
             else: 
                 negative_list.append(results_list[i]) 
+
+    if (request.POST.get("req_inc_hs") == "hard") or (request.POST.get("req_inc_hs") == "soft"):
+         return render(request=request, template_name="search/home.html", context={"all_results": results_list, "hard": hard_list, "soft": soft_list, "positive": positive_list, "neutral": neutral_list, "negative": negative_list, "hardcount": hard_count, "softcount": soft_count, "link": request.POST.get("url_link")})
          
-    return render(request=request, template_name="search/home.html", context={"all_results": results_list, "hard": hard_list, "soft": soft_list, "positive": positive_list, "neutral": neutral_list, "negative": negative_list})    
+    return render(request=request, template_name="search/home.html", context={"all_results": results_list, "hard": hard_list, "soft": soft_list, "positive": positive_list, "neutral": neutral_list, "negative": negative_list, "hardcount": hard_count, "softcount": soft_count, "link": ""}) 
 
 
 

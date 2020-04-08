@@ -18,7 +18,7 @@
                 document.getElementById("soft").style.display = "none";
                 document.getElementById("pos").style.display = "none";
                 document.getElementById("neu").style.display = "none";
-                document.getElementById("neg").style.display = "none";
+                document.getElementById("neg").style.display = "none"; 
             } 
 
             function show_just_soft() {
@@ -55,7 +55,13 @@
                 document.getElementById("pos").style.display = "none";
                 document.getElementById("neu").style.display = "none";
                 document.getElementById("neg").style.display = "block"; 
-            }  
+            }
+
+            function url_click_handler(cat, link) { 
+                document.getElementById("urlink").value = link; 
+                document.getElementById("request_inc_hs").value = cat; 
+                document.getElementById("request_inc_hs_form").submit();  
+            }
         </script>
     </head>
 
@@ -66,12 +72,18 @@
         <button style="color: black; background-color: cadetblue; padding-left: 25px; padding-right: 25px; padding-top: 10px; padding-bottom: 10px; margin-left: 25px; margin-right: 50px" type="button" onclick="show_just_pos()">Positive News</button>
         <button style="color: black; background-color: cadetblue; padding-left: 25px; padding-right: 25px; padding-top: 10px; padding-bottom: 10px; margin-left: 25px; margin-right: 50px" type="button" onclick="show_just_neu()">Neutral News</button>
         <button style="color: black; background-color: cadetblue; padding-left: 25px; padding-right: 25px; padding-top: 10px; padding-bottom: 10px; margin-left: 25px; margin-right: 50px" type="button" onclick="show_just_neg()">Negative News</button> 
+
+        <form id="request_inc_hs_form" method="POST">  
+            {% csrf_token %}
+            <input type = "hidden" name="req_inc_hs" id="request_inc_hs" value = "" />
+            <input type = "hidden" name="url_link" id="urlink" value = "" />
+        </form>
         
         <div style="margin-top: 40px; margin-bottom: 15px; margin-left: 300px;">  
             <form method="POST"> 
                 {% csrf_token %} 
                 <label for="search_box">Query: </label>
-                <input style="width: 50%; height: 25px; margin-left: 10px;" id="search_box" type="text" name="query_search"> 
+                <input style="width: 50%; height: 25px; margin-left: 10px;" id="search_box" type="text" name="query_search">  
                 <input style="color: black; background-color: brown; height: 25px; padding-left: 10px; padding-right: 10px; padding-top: 5px; margin-left: 10px;" type="submit" value="Search"> 
             </form>
         </div>
@@ -79,7 +91,7 @@
         <div id="all">
             {% for result in all_results %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a>
             <br/><br/>
             Category: {{result.news_category.0}} news 
             <br/>
@@ -91,7 +103,7 @@
         <div id="hard">
             {% for result in hard %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a> 
             <br/><br/>
             {{result.news_category.0}} news 
             <br/>
@@ -103,7 +115,7 @@
         <div id="soft">
             {% for result in soft %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a>
             <br/><br/>
             {{result.news_category.0}} news 
             <br/>
@@ -115,7 +127,7 @@
         <div id="pos">
             {% for result in positive %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a>
             <br/><br/>
             {{result.news_category.0}} news 
             <br/>
@@ -127,7 +139,7 @@
         <div id="neu">
             {% for result in neutral %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a>
             <br/><br/>
             {{result.news_category.0}} news 
             <br/>
@@ -139,7 +151,7 @@
         <div id="neg">
             {% for result in negative %} 
             <br/>
-            <a href={{result.url.0}}>{{result.title.0}}</a>
+            <a onclick="url_click_handler('{{result.news_category.0}}', '{{result.url.0}}')" href="#">{{result.title.0}}</a>
             <br/><br/>
             {{result.news_category.0}} news 
             <br/>
@@ -149,7 +161,16 @@
         </div>
 
         <script>
-            show_just_all();
+            if ('{{link}}'.localeCompare("")!=0) {
+                window.location.href = '{{link}}'; 
+            }
+            else if (parseInt('{{hardcount}}') >= parseInt('{{softcount}}')) {
+                  show_just_hard(); 
+            }
+            else if (parseInt('{{hardcount}}') < parseInt('{{softcount}}')) {
+                show_just_soft(); 
+            }
+             
         </script>
          
     </body>
